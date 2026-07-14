@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Management — комьюнити по товарке: карго, поставщики, сбыт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Onest:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --kraft: #D9BE8C;
+    --kraft-deep: #C7A96E;
+    --label: #FFFDF6;
+    --ink: #17130C;
+    --ink-soft: #4A4130;
+    --postal-red: #D42B1E;
+    --postal-blue: #1E4FA1;
+    --stamp: #C41E17;
+    --stripe: repeating-linear-gradient(45deg,
+      var(--postal-red) 0 14px, var(--label) 14px 28px,
+      var(--postal-blue) 28px 42px, var(--label) 42px 56px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,0.25), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(0,0,0,0.08), transparent 50%),
+      var(--kraft);
+    color: var(--ink);
+    font-family: 'Onest', sans-serif;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--postal-blue);
+    outline-offset: 3px;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+  .display { font-family: 'Rubik Mono One', monospace; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── NAV ─────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--kraft);
+    border-bottom: 6px solid transparent;
+    border-image: var(--stripe) 6;
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 66px;
+  }
+  .brand {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+  .brand span { color: var(--postal-red); }
+  .nav-cta {
+    background: var(--ink);
+    color: var(--label);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 10px 18px;
+    border: 2px solid var(--ink);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-cta:hover { background: var(--label); color: var(--ink); }
+
+  /* ── HERO ────────────────────────── */
+  .hero {
+    padding: 72px 0 56px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 44px;
+    align-items: center;
+  }
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; padding: 44px 0 40px; }
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    background: var(--label);
+    border: 2px solid var(--ink);
+    padding: 6px 12px;
+    margin-bottom: 26px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .hero-eyebrow b { color: var(--postal-red); }
+
+  .hero h1 {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: clamp(1.9rem, 5.4vw, 3.3rem);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 .ship { color: var(--postal-blue); }
+  .hero h1 .sell { color: var(--postal-red); }
+
+  .hero p.lead {
+    margin-top: 22px;
+    font-size: 1.06rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .hero p.lead b { color: var(--ink); }
+
+  .hero-ctas { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-main {
+    display: inline-block;
+    background: var(--postal-red);
+    color: var(--label);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 16px 26px;
+    border: 2px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-main:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+  .btn-ghost {
+    display: inline-block;
+    background: var(--label);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 16px 26px;
+    border: 2px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-ghost:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+
+  /* ── WAYBILL (signature) ─────────── */
+  .waybill {
+    background: var(--label);
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 rgba(23,19,12,0.35);
+    position: relative;
+  }
+  .waybill-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--stripe);
+  }
+  .waybill-head span {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 0.72rem;
+    background: var(--label);
+    border: 2px solid var(--ink);
+    padding: 5px 10px;
+  }
+  .waybill-body { padding: 20px 18px 22px; }
+  .wb-row {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--ink-soft);
+    font-size: 0.9rem;
+    align-items: baseline;
+  }
+  .wb-row:last-of-type { border-bottom: none; }
+  .wb-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+  .wb-val { font-weight: 600; }
+  .wb-val .hot { color: var(--postal-red); font-weight: 800; }
+
+  .barcode {
+    margin-top: 16px;
+    height: 44px;
+    background: repeating-linear-gradient(90deg,
+      var(--ink) 0 2px, transparent 2px 5px,
+      var(--ink) 5px 9px, transparent 9px 12px,
+      var(--ink) 12px 13px, transparent 13px 17px,
+      var(--ink) 17px 20px, transparent 20px 22px);
+  }
+  .track-num {
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .stamp {
+    position: absolute;
+    top: -20px; right: -14px;
+    transform: rotate(9deg);
+    border: 3px solid var(--stamp);
+    color: var(--stamp);
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 0.72rem;
+    padding: 9px 13px;
+    background: rgba(255,253,246,0.85);
+    animation: stamp-in 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) 0.4s backwards;
+  }
+  @keyframes stamp-in {
+    from { transform: rotate(9deg) scale(2.4); opacity: 0; }
+    to   { transform: rotate(9deg) scale(1);   opacity: 1; }
+  }
+
+  /* ── TICKER ──────────────────────── */
+  .ticker {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    background: var(--label);
+    overflow: hidden;
+    padding: 11px 0;
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 3.2rem;
+    white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    animation: roll 36s linear infinite;
+  }
+  .ticker-track span b { color: var(--postal-blue); }
+  @keyframes roll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ────────────────────── */
+  section { padding: 64px 0; }
+  .sec-tag {
+    display: inline-block;
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 0.72rem;
+    background: var(--ink);
+    color: var(--label);
+    padding: 7px 12px;
+    margin-bottom: 16px;
+  }
+  .sec-tag.red { background: var(--postal-red); }
+  .sec-tag.blue { background: var(--postal-blue); }
+  section h2 {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: clamp(1.3rem, 3.2vw, 1.9rem);
+    line-height: 1.25;
+    max-width: 26ch;
+  }
+  .sec-sub { margin-top: 12px; color: var(--ink-soft); max-width: 58ch; }
+
+  /* routes */
+  .routes { margin-top: 34px; display: flex; flex-direction: column; gap: 12px; }
+  .route {
+    background: var(--label);
+    border: 2px solid var(--ink);
+    display: grid;
+    grid-template-columns: minmax(150px, 240px) 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 15px 18px;
+    box-shadow: 4px 4px 0 rgba(23,19,12,0.25);
+    transition: transform 0.15s ease;
+  }
+  .route:hover { transform: translateX(4px); }
+  .route-from { font-weight: 800; font-size: 1rem; }
+  .route-info { color: var(--ink-soft); font-size: 0.9rem; }
+  .route-info b { color: var(--postal-red); }
+  .route-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.78rem;
+    background: var(--kraft);
+    border: 2px solid var(--ink);
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+  @media (max-width: 700px) {
+    .route { grid-template-columns: 1fr; gap: 6px; }
+    .route-arrow { justify-self: start; }
+  }
+
+  /* numbers strip */
+  .numbers {
+    margin-top: 0;
+    background: var(--ink);
+    color: var(--label);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-image: var(--stripe) 6;
+  }
+  .numbers .wrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  @media (max-width: 820px) { .numbers .wrap { grid-template-columns: repeat(2, 1fr); } }
+  .num-cell { border-left: 2px dashed rgba(255,253,246,0.35); padding-left: 16px; }
+  .num-val {
+    font-family: 'Rubik Mono One', monospace;
+    font-size: clamp(1.4rem, 3.4vw, 2rem);
+    color: var(--kraft);
+  }
+  .num-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+    color: rgba(255,253,246,0.75);
+  }
+
+  /* knowledge grid */
+  .grid {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .kcard {
+    background: var(--label);
+    border: 2px solid var(--ink);
+    padding: 18px 18px 16px;
+    box-shadow: 4px 4px 0 rgba(23,19,12,0.25);
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: transform 0.15s ease;
+  }
+  .kcard:hover { transform: translateY(-3px); }
+  .k-ico { font-size: 1.35rem; line-height: 1; margin-top: 2px; }
+  .kcard h3 { font-size: 0.98rem; font-weight: 800; }
+  .kcard p { font-size: 0.87rem; color: var(--ink-soft); margin-top: 4px; }
+
+  /* calls */
+  .calls {
+    margin-top: 40px;
+    background: var(--postal-blue);
+    color: var(--label);
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 30px 26px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items: center;
+  }
+  @media (max-width: 640px) { .calls { grid-template-columns: 1fr; } }
+  .calls .k-big { font-size: 2.2rem; }
+  .calls h3 { font-family: 'Rubik Mono One', monospace; font-size: 1.02rem; }
+  .calls p { margin-top: 8px; font-size: 0.92rem; color: rgba(255,253,246,0.85); max-width: 60ch; }
+
+  /* price */
+  .price-box {
+    background: var(--label);
+    border: 2px solid var(--ink);
+    box-shadow: 8px 8px 0 rgba(23,19,12,0.35);
+    padding: 44px 30px 40px;
+    text-align: center;
+    position: relative;
+  }
+  .price-box h2 { margin: 0 auto; }
+  .chips {
+    margin-top: 26px;
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  }
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 2px solid var(--ink);
+    padding: 12px 18px;
+    background: var(--kraft);
+  }
+  .chip.main { background: var(--postal-red); color: var(--label); font-size: 1.15rem; }
+  .forever {
+    margin-top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+  }
+  .price-box .btn-main { margin-top: 26px; font-size: 1.02rem; }
+  .price-stamp {
+    position: absolute;
+    top: -18px; left: 22px;
+    transform: rotate(-7deg);
+    border: 3px solid var(--stamp);
+    color: var(--stamp);
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 0.7rem;
+    padding: 8px 12px;
+    background: rgba(255,253,246,0.9);
+  }
+
+  footer {
+    border-top: 6px solid transparent;
+    border-image: var(--stripe) 6;
+    padding: 26px 0 30px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  footer a { text-decoration: underline; }
+
+  ::selection { background: var(--postal-blue); color: var(--label); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .stamp { animation: none; }
+    .route:hover, .kcard:hover, .btn-main:hover, .btn-ghost:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">MODERN <span>MGMT</span></div>
+    <a class="nav-cta" href="https://t.me/modernmanagmant">КУПИТЬ ВХОД → 13 $</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <span class="hero-eyebrow">ГРУЗ ПРИБЫЛ · <b>КОМЬЮНИТИ ПО ТОВАРКЕ</b></span>
+      <h1><span class="ship">ВОЗИ.</span><br><span class="sell">ПРОДАВАЙ.</span><br>ЗАРАБАТЫВАЙ.</h1>
+      <p class="lead">Карго из <b>5 направлений</b>, база из <b>700+ поставщиков</b>, <b>300+ чатов</b> для сбыта по РБ и РФ и созвоны каждую неделю. Всё, чтобы запустить свою товарку — без поиска вслепую.</p>
+      <div class="hero-ctas">
+        <a class="btn-main" href="https://t.me/modernmanagmant">Купить вход — 13 $</a>
+        <a class="btn-ghost" href="#inside">Что внутри ↓</a>
+      </div>
+    </div>
+
+    <div class="waybill">
+      <div class="stamp">ДОСТУП НАВСЕГДА</div>
+      <div class="waybill-head">
+        <span>НАКЛАДНАЯ</span>
+        <span>№ MM-∞</span>
+      </div>
+      <div class="waybill-body">
+        <div class="wb-row"><div class="wb-key">ОТКУДА</div><div class="wb-val">🇨🇳 🇺🇸 🇩🇪 🇫🇷 🇮🇹 🇵🇱 🇹🇷 🇯🇵 + ещё 14 стран</div></div>
+        <div class="wb-row"><div class="wb-key">КУДА</div><div class="wb-val">РБ 🇧🇾 / РФ 🇷🇺 — до двери</div></div>
+        <div class="wb-row"><div class="wb-key">СОДЕРЖИМОЕ</div><div class="wb-val">Карго-контакты, поставщики, каналы сбыта</div></div>
+        <div class="wb-row"><div class="wb-key">ТАРИФ</div><div class="wb-val"><span class="hot">от 3 $/кг</span> из Китая</div></div>
+        <div class="wb-row"><div class="wb-key">СРОК</div><div class="wb-val">10–12 дней в пути</div></div>
+        <div class="barcode" aria-hidden="true"></div>
+        <div class="track-num">MM·2026·TOVARKA·FOREVER</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>🇨🇳 ГУАНЧЖОУ → МИНСК <b>$3/КГ</b></span>
+    <span>🇺🇸 НЬЮ-ЙОРК → МОСКВА</span>
+    <span>🇹🇷 СТАМБУЛ → МИНСК</span>
+    <span>🇯🇵 ТОКИО → МОСКВА</span>
+    <span>🇩🇪 БЕРЛИН → МИНСК</span>
+    <span>🇮🇹 МИЛАН → МОСКВА</span>
+    <span>🇨🇳 ГУАНЧЖОУ → МИНСК <b>$3/КГ</b></span>
+    <span>🇺🇸 НЬЮ-ЙОРК → МОСКВА</span>
+    <span>🇹🇷 СТАМБУЛ → МИНСК</span>
+    <span>🇯🇵 ТОКИО → МОСКВА</span>
+    <span>🇩🇪 БЕРЛИН → МИНСК</span>
+    <span>🇮🇹 МИЛАН → МОСКВА</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="inside">
+    <span class="sec-tag blue">МАРШРУТЫ</span>
+    <h2>Карго, которые уже проверены</h2>
+    <p class="sec-sub">Не список из интернета, а контакты, по которым реально возят. По каждому направлению — с кем работать и как считать доставку.</p>
+
+    <div class="routes">
+      <div class="route">
+        <div class="route-from">🇨🇳 Китай</div>
+        <div class="route-info"><b>9 карго-компаний</b> · от 3 $/кг · 10–12 дней</div>
+        <div class="route-arrow">→ РБ / РФ</div>
+      </div>
+      <div class="route">
+        <div class="route-from">🇺🇸 США</div>
+        <div class="route-info">Проверенные карго под шмот и технику</div>
+        <div class="route-arrow">→ РБ / РФ</div>
+      </div>
+      <div class="route">
+        <div class="route-from">🇩🇪🇫🇷🇮🇹🇵🇱 Европа</div>
+        <div class="route-info">Доставка из <b>20 стран</b> — лучшие карго по каждой</div>
+        <div class="route-arrow">→ РБ / РФ</div>
+      </div>
+      <div class="route">
+        <div class="route-from">🇹🇷 Турция</div>
+        <div class="route-info">Лучшие карго под закуп с рынков и фабрик</div>
+        <div class="route-arrow">→ РБ / РФ</div>
+      </div>
+      <div class="route">
+        <div class="route-from">🇯🇵 Япония</div>
+        <div class="route-info">Карго под редкий шмот и аукционы</div>
+        <div class="route-arrow">→ РБ / РФ</div>
+      </div>
+      <div class="route">
+        <div class="route-from">🚚 По РБ / РФ</div>
+        <div class="route-info">Лучшие транспортные компании внутри страны</div>
+        <div class="route-arrow">до клиента</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="numbers">
+  <div class="wrap">
+    <div class="num-cell"><div class="num-val">700+</div><div class="num-label">ПОСТАВЩИКОВ ОДЕЖДЫ</div></div>
+    <div class="num-cell"><div class="num-val">300+</div><div class="num-label">ЧАТОВ ДЛЯ ПРОДАЖ РБ/РФ</div></div>
+    <div class="num-cell"><div class="num-val">9</div><div class="num-label">КАРГО ИЗ КИТАЯ ОТ 3$/КГ</div></div>
+    <div class="num-cell"><div class="num-val">100+</div><div class="num-label">УЧАСТНИКОВ НА СОЗВОНАХ</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <span class="sec-tag red">БАЗА ЗНАНИЙ</span>
+    <h2>Чему научишься внутри</h2>
+
+    <div class="grid">
+      <div class="kcard"><div class="k-ico">📦</div><div><h3>Дропшиппинг</h3><p>Как зарабатывать без своего склада — схема работы и все контакты.</p></div></div>
+      <div class="kcard"><div class="k-ico">🧵</div><div><h3>700+ поставщиков одежды</h3><p>Базы с проверенным качеством — от базовых вещей до редких позиций.</p></div></div>
+      <div class="kcard"><div class="k-ico">💬</div><div><h3>300+ чатов сбыта</h3><p>Где продавать по РБ и РФ — готовый список площадок под товарку.</p></div></div>
+      <div class="kcard"><div class="k-ico">💳</div><div><h3>Alipay и WeChat</h3><p>Как пополнять и оплачивать закупки в Китае без посредников.</p></div></div>
+      <div class="kcard"><div class="k-ico">📄</div><div><h3>ООО и ИП</h3><p>Как открыть и закрыть, какие документы нужны, кому это надо, как правильно платить налоги и не переплачивать.</p></div></div>
+      <div class="kcard"><div class="k-ico">📈</div><div><h3>Раскрутка Telegram-магазина</h3><p>Как набрать аудиторию и превратить канал в точку продаж.</p></div></div>
+      <div class="kcard"><div class="k-ico">↩️</div><div><h3>Возвраты вещей</h3><p>Как оформлять возвраты и не терять деньги на браке и невыкупах.</p></div></div>
+      <div class="kcard"><div class="k-ico">🔍</div><div><h3>Легитчек любой вещи</h3><p>Как отличить оригинал от подделки — чтобы не попасть на закупе.</p></div></div>
+      <div class="kcard"><div class="k-ico">🏷️</div><div><h3>Свой бренд одежды</h3><p>От идеи и производства до первой продажи под своим именем.</p></div></div>
+      <div class="kcard"><div class="k-ico">🚚</div><div><h3>Логистика под ключ</h3><p>Как выбрать карго и ТК под свой объём и не переплачивать за кг.</p></div></div>
+    </div>
+
+    <div class="calls">
+      <div class="k-big">🎙</div>
+      <div>
+        <h3>СОЗВОНЫ КАЖДУЮ НЕДЕЛЮ</h3>
+        <p>Живые разборы вопросов лично с автором и 100+ участниками, которые уже делают деньги на товарке. Спрашиваешь — получаешь ответ по своей ситуации, а не общие слова.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="price-box">
+      <div class="price-stamp">ОПЛАТА ОДИН РАЗ</div>
+      <h2>Вход в комьюнити</h2>
+      <div class="chips">
+        <div class="chip">40 BYN 🇧🇾</div>
+        <div class="chip main">13 $ 💵</div>
+        <div class="chip">1100 ₽ 🇷🇺</div>
+      </div>
+      <div class="forever">ДОСТУП НАВСЕГДА · ВСЕ ОБНОВЛЕНИЯ ВКЛЮЧЕНЫ</div>
+      <a class="btn-main" href="https://t.me/modernmanagmant">Приобрести вход → @modernmanagmant</a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">© 2026 MODERN MANAGEMENT · Telegram: <a href="https://t.me/modernmanagmant">@modernmanagmant</a></div>
+</footer>
+
+</body>
+</html>
